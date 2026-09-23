@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,46 +24,62 @@ namespace BaseProject.BaseClass {
         public static string m_ConnectionStringEntity;
         private const string _ConfigName = "Connect.xml";
         private const string _MainNode = "Settings";
+        private ProgramSettings m_Settings = new ProgramSettings();
 
         #region Connection Properties
         public string Username {
             get {
-                return "root";
+                string sDefaultValue = EncryptValue("root");
+                string value = m_Settings.CLoadSettings("Connect.xml", "Settings", SettingsFields.Password.ToString(), "");
+                return DecryptValue(value);
             }
             set {
-                // Configuration saving will be implemented later.
+                string sValue = EncryptValue(value);
+                m_Settings.CSaveSettings(_ConfigName, _MainNode, SettingsFields.Username.ToString(), sValue);
             }
         }
         public string Password {
             get {
-                return "";
+                string sDefaultValue = EncryptValue("");
+                string value = m_Settings.CLoadSettings(_ConfigName, _MainNode, SettingsFields.Password.ToString(), sDefaultValue);
+                return DecryptValue(value);
             }
             set {
-                // Configuration saving will be implemented later.
+                string sValue = EncryptValue(value);
+                m_Settings.CSaveSettings(_ConfigName, _MainNode, SettingsFields.Password.ToString(), sValue);
             }
         }
         public string Host {
             get {
-                return "localhost";
+                string sDefaultValue = EncryptValue("localhost");
+                string value = m_Settings.CLoadSettings(_ConfigName, _MainNode, SettingsFields.Host.ToString(), sDefaultValue);
+                return DecryptValue(value);
             }
             set {
-                // Configuration saving will be implemented later.
+                string sValue = EncryptValue(value);
+                m_Settings.CSaveSettings(_ConfigName, _MainNode, SettingsFields.Host.ToString(), sValue);
             }
         }
         public string Database {
             get {
-                return "BaseProject";
+                string sDefaultValue = EncryptValue("myDB");
+                string value = m_Settings.CLoadSettings(_ConfigName, _MainNode, SettingsFields.Database.ToString(), sDefaultValue);
+                return DecryptValue(value);
             }
             set {
-                // Configuration saving will be implemented later.
+                string sValue = EncryptValue(value);
+                m_Settings.CSaveSettings(_ConfigName, _MainNode, SettingsFields.Database.ToString(), sValue);
             }
         }
         public string Port {
             get {
-                return "3306";
+                string sDefaultValue = EncryptValue("3306");
+                string value = m_Settings.CLoadSettings(_ConfigName, _MainNode, SettingsFields.Port.ToString(), sDefaultValue);
+                return DecryptValue(value);
             }
             set {
-                // Configuration saving will be implemented later.
+                string sValue = EncryptValue(value);
+                m_Settings.CSaveSettings(_ConfigName, _MainNode, SettingsFields.Port.ToString(), sValue);
             }
         }
         #endregion
@@ -164,7 +181,7 @@ namespace BaseProject.BaseClass {
             if (ErrorIP == null) {
                 ErrorIP = new List<string>();
             }
-            foreach(string item in ErrorIP) {
+            foreach (string item in ErrorIP) {
                 if (item == DataSource) {
                     throw new Exception("Connection to the database is restricted for this IP address.");
                 }
@@ -190,6 +207,36 @@ namespace BaseProject.BaseClass {
                 }
             }
         }
+        #endregion
+        #region Encryption
+
+        private string EncryptValue(string value) {
+            if (string.IsNullOrEmpty(value)) {
+                return value;
+            }
+            byte[] data = Encoding.UTF8.GetBytes(value);
+            byte[] encrypted = ProtectedData.Protect(data, null, DataProtectionScope.CurrentUser);
+            return Convert.ToBase64String(encrypted);
+        }
+
+        private string DecryptValue(string value) {
+            if (string.IsNullOrEmpty(value)) {
+                return value;
+            }
+
+            try {
+                byte[] encrypted = Convert.FromBase64String(value);
+                byte[] decrypted = ProtectedData.Unprotect(encrypted, null, DataProtectionScope.CurrentUser);
+                return Encoding.UTF8.GetString(decrypted);
+            }
+            catch (CryptographicException) {
+                return string.Empty;
+            }
+            catch (FormatException) {
+                return string.Empty;
+            }
+        }
+
         #endregion
     }
 }

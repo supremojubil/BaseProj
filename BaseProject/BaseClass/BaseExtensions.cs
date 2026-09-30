@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Controls;
 
 namespace BaseProject.BaseClass {
     public static class BaseExtensions {

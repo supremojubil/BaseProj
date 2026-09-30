@@ -30,7 +30,7 @@ namespace BaseProject.BaseClass {
         public string Username {
             get {
                 string sDefaultValue = EncryptValue("root");
-                string value = m_Settings.CLoadSettings("Connect.xml", "Settings", SettingsFields.Password.ToString(), "");
+                string value = m_Settings.CLoadSettings("Connect.xml", "Settings", SettingsFields.Username.ToString(), "");
                 return DecryptValue(value);
             }
             set {

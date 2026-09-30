@@ -14,9 +14,9 @@ namespace BaseProject.Forms {
         private System.Windows.Forms.Label lblInfoTitle;
         private System.Windows.Forms.Label lblInfoMessage;
 
-        private System.Windows.Forms.Panel pnlBaseBottom;
-        private System.Windows.Forms.Panel pnlBottomButtonHolder;
-        private System.Windows.Forms.Button btnClose;
+        protected System.Windows.Forms.Panel pnlBaseBottom;
+        protected System.Windows.Forms.Panel pnlBottomButtonHolder;
+        protected System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label lblBase;
 
         protected override void Dispose(bool disposing) {
@@ -109,14 +109,14 @@ namespace BaseProject.Forms {
             // 
             pnlBottomButtonHolder.Controls.Add(btnClose);
             pnlBottomButtonHolder.Dock = DockStyle.Right;
-            pnlBottomButtonHolder.Location = new Point(600, 3);
+            pnlBottomButtonHolder.Location = new Point(489, 3);
             pnlBottomButtonHolder.Name = "pnlBottomButtonHolder";
-            pnlBottomButtonHolder.Size = new Size(100, 49);
+            pnlBottomButtonHolder.Size = new Size(211, 49);
             pnlBottomButtonHolder.TabIndex = 2;
             // 
             // btnClose
             // 
-            btnClose.Location = new Point(12, 13);
+            btnClose.Location = new Point(129, 12);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(75, 25);
             btnClose.TabIndex = 0;

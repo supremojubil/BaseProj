@@ -88,6 +88,7 @@ namespace BaseProject.Forms {
             // 
             // picInfo
             // 
+            picInfo.Image = Properties.Resources.no_pictures;
             picInfo.Location = new Point(12, 10);
             picInfo.Name = "picInfo";
             picInfo.Size = new Size(48, 48);

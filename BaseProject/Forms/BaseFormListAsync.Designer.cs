@@ -86,16 +86,16 @@
             pnlInfo.Dock = DockStyle.Top;
             pnlInfo.Location = new Point(0, 0);
             pnlInfo.Name = "pnlInfo";
-            pnlInfo.Size = new Size(800, 93);
+            pnlInfo.Size = new Size(800, 77);
             pnlInfo.TabIndex = 1;
             // 
             // pnlInfoText
             // 
             pnlInfoText.Controls.Add(lblInfoMessage);
             pnlInfoText.Controls.Add(lblInfoTitle);
-            pnlInfoText.Location = new Point(115, 10);
+            pnlInfoText.Location = new Point(75, 7);
             pnlInfoText.Name = "pnlInfoText";
-            pnlInfoText.Size = new Size(666, 71);
+            pnlInfoText.Size = new Size(699, 64);
             pnlInfoText.TabIndex = 0;
             // 
             // lblInfoMessage
@@ -103,7 +103,7 @@
             lblInfoMessage.Dock = DockStyle.Fill;
             lblInfoMessage.Location = new Point(0, 15);
             lblInfoMessage.Name = "lblInfoMessage";
-            lblInfoMessage.Size = new Size(666, 56);
+            lblInfoMessage.Size = new Size(699, 49);
             lblInfoMessage.TabIndex = 3;
             lblInfoMessage.Text = "Ready.";
             // 
@@ -120,9 +120,11 @@
             // 
             // picInfo
             // 
+            picInfo.Image = Properties.Resources.no_pictures;
             picInfo.Location = new Point(12, 11);
             picInfo.Name = "picInfo";
-            picInfo.Size = new Size(97, 69);
+            picInfo.Size = new Size(45, 45);
+            picInfo.SizeMode = PictureBoxSizeMode.CenterImage;
             picInfo.TabIndex = 1;
             picInfo.TabStop = false;
             // 

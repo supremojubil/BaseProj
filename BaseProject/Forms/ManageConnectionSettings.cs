@@ -13,7 +13,6 @@ namespace BaseProject.Forms {
     public partial class ManageConnectionSettings : BaseMaintainForm {
         public ManageConnectionSettings() {
             InitializeComponent();
-            FormMode = BaseClass.BaseConstants.FormMode.Add;
         }
 
         private void ManageConnectionSettings_Load(object sender, EventArgs e) {

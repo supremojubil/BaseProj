@@ -1,49 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
-using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace BaseProject.Forms {
-    public partial class BaseFormList : Form {
+    public partial class BaseFormListAsync : Form {
+        #region Fields
+        private Image _infoImage;
+        private bool _displayInfoBar;
+        #endregion
+
         #region Properties
-
-        [Browsable(false)]
-        public bool IsDirty { get; protected set; }
-
+        [Browsable(true)]
         [Category("BaseProject")]
-        [Description("Allows the Enter key to behave like the Tab key.")]
-        [DefaultValue(true)]
-        public bool UseKeyDownTab { get; set; }
-
-        [Category("BaseProject")]
-        [Description("Displays the information bar.")]
-        [DefaultValue(true)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public bool DisplayInfoBar {
-            get {
-                return pnlInfo.Visible;
-            }
-            set {
-                pnlInfo.Visible = value;
-            }
-        }
-
-        [Category("BaseProject")]
-        [Description("Image displayed in the information bar.")]
+        [Description("The image that will be used for the information bar.")]
         public Image InfoImage {
             get {
-                return picInfo.Image;
+                return _infoImage;
             }
             set {
-                picInfo.Image = value;
+                _infoImage = value;
+                if (picInfo != null) {
+                    picInfo.Image = _infoImage;
+                }
+                Invalidate();
             }
         }
-
+        [Browsable(true)]
         [Category("BaseProject")]
-        [Description("Title displayed in the information bar.")]
+        [Description("Determines whether the information bar is displayed.")]
+        [DefaultValue(true)]
+        public bool DisplayInfoBar {
+            get {
+                return _displayInfoBar;
+            }
+            set {
+                _displayInfoBar = value;
+                if (pnlInfo != null) {
+                    pnlInfo.Visible = _displayInfoBar;
+                }
+                Invalidate();
+            }
+        }
+        [Browsable(true)]
+        [Category("BaseProject")]
+        [Description("Text displayed in the information title.")]
         public string InfoText1 {
             get {
                 return lblInfoTitle.Text;
@@ -53,8 +59,9 @@ namespace BaseProject.Forms {
             }
         }
 
+        [Browsable(true)]
         [Category("BaseProject")]
-        [Description("Message displayed in the information bar.")]
+        [Description("Text displayed in the information message.")]
         public string InfoText2 {
             get {
                 return lblInfoMessage.Text;
@@ -64,6 +71,7 @@ namespace BaseProject.Forms {
             }
         }
 
+        [Browsable(true)]
         [Category("BaseProject")]
         [Description("Background color of the information bar.")]
         public Color InfoBackColor {
@@ -75,6 +83,7 @@ namespace BaseProject.Forms {
             }
         }
 
+        [Browsable(true)]
         [Category("BaseProject")]
         [Description("Color of the information title.")]
         public Color InfoTitleColor {
@@ -86,6 +95,7 @@ namespace BaseProject.Forms {
             }
         }
 
+        [Browsable(true)]
         [Category("BaseProject")]
         [Description("Color of the information message.")]
         public Color InfoMessageColor {
@@ -96,64 +106,48 @@ namespace BaseProject.Forms {
                 lblInfoMessage.ForeColor = value;
             }
         }
+
+        [Category("BaseProject")]
+        [Description("Allows the Enter key to behave like the Tab key.")]
+        [DisplayName("Key Down")]
+        [DefaultValue(true)]
+        public bool UseKeyDownTab { get; set; }
+
+        [Browsable(false)]
+        public bool IsDirty { get; protected set; }
         #endregion
-
-        #region Constructor
-
-        public BaseFormList() {
+        public BaseFormListAsync() {
             InitializeComponent();
             IsDirty = false;
-            UseKeyDownTab = true;
-            DisplayInfoBar = true;
-            InfoText1 = "Information";
-            InfoText2 = "Ready.";
-            InfoTitleColor = Color.Black;
-            InfoMessageColor = Color.Black;
         }
 
-        #endregion
-
-        #region Key Events
-
-        private void BaseFormList_KeyDown(
-            object sender,
-            KeyEventArgs e) {
+        private async void BaseFormListAsync_KeyDown(object sender, KeyEventArgs e) {
+            if (!UseKeyDownTab) {
+                return;
+            }
             switch (e.KeyCode) {
                 case Keys.Enter:
-                    if (!UseKeyDownTab) {
-                        return;
-                    }
+                    e.Handled = true;
                     e.SuppressKeyPress = true;
                     SendKeys.Send("{TAB}");
                     break;
-
                 case Keys.F5:
-                    RefreshList();
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+                    await RefreshListAsync();
                     break;
-
                 case Keys.Escape:
                     Close();
                     break;
             }
         }
 
-        #endregion
-
-        #region Refresh
-
-        protected virtual void RefreshList() {
+        protected virtual Task RefreshListAsync() {
+            return Task.CompletedTask;
         }
 
-        #endregion
-
-        #region Close
-
-        private void btnClose_Click(
-            object sender,
-            EventArgs e) {
+        private void btnClose_Click(object sender, EventArgs e) {
             Close();
         }
-
-        #endregion
     }
 }

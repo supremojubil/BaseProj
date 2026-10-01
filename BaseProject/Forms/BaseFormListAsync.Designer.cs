@@ -149,14 +149,14 @@
 
         #endregion
 
-        private Panel pnlBaseBottom;
-        private Panel pnlBottomButtonHolder;
-        private Panel pnlInfo;
-        private Button btnClose;
-        private Label lblBase;
-        private Panel pnlInfoText;
-        private PictureBox picInfo;
-        private Label lblInfoMessage;
-        private Label lblInfoTitle;
+        protected Panel pnlBaseBottom;
+        protected Panel pnlBottomButtonHolder;
+        protected Panel pnlInfo;
+        protected Button btnClose;
+        protected Label lblBase;
+        protected Panel pnlInfoText;
+        protected PictureBox picInfo;
+        protected Label lblInfoMessage;
+        protected Label lblInfoTitle;
     }
 }

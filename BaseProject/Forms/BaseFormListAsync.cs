@@ -1,10 +1,15 @@
-﻿using System;
+﻿using BaseProject.BaseClass;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity.Core;
+using System.Data.Entity.Validation;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -149,5 +154,92 @@ namespace BaseProject.Forms {
         private void btnClose_Click(object sender, EventArgs e) {
             Close();
         }
+        #region Error Handling
+
+        protected virtual void ShowException(Exception exception) {
+            if (exception is ArgumentException) {
+                CBaseMessages.ErrorMessage(exception.Message, "Argument Error");
+                return;
+            }
+
+            if (exception is NotSupportedException) {
+                CBaseMessages.ErrorMessage(exception.Message, "Not Supported Error");
+                return;
+            }
+
+            if (exception is HttpRequestException) {
+                CBaseMessages.ErrorMessage(exception.Message, "HTTP Request Error");
+                return;
+            }
+
+            if (exception is JsonException) {
+                CBaseMessages.ErrorMessage(exception.Message, "JSON Serialization Error");
+                return;
+            }
+
+            if (exception is DbEntityValidationException entityException) {
+                CBaseMessages.ErrorMessage(GetEntityValidationMessage(entityException), "Entity Error");
+                return;
+            }
+
+            if (exception is EntityException) {
+                CBaseMessages.ErrorMessage(exception.Message, "Entity Error");
+                return;
+            }
+
+            if (exception is MySqlException mySqlException) {
+                HandleMySqlException(mySqlException);
+                return;
+            }
+
+            if (exception is WarningException) {
+                CBaseMessages.ErrorMessage(exception.Message, "Warning");
+                return;
+            }
+
+            StringBuilder message = new StringBuilder();
+            message.Append(exception.Message);
+            Exception innerException = exception.InnerException;
+
+            while (innerException != null) {
+                message.AppendLine();
+                message.Append("Inner exception: ");
+                message.Append(innerException.Message);
+                innerException = innerException.InnerException;
+            }
+
+            CBaseMessages.ErrorMessage(message.ToString(), "Error");
+        }
+
+        private void HandleMySqlException(MySqlException exception) {
+            switch (exception.Number) {
+                case 0:
+                    CBaseMessages.ErrorMessage("Can not connect to server.\n" + "Please contact administrator.", "MySql Error");
+                    break;
+
+                case 1045:
+                    CBaseMessages.ErrorMessage("Invalid username/password.\n" + "Please try again.", "MySql Error");
+                    break;
+
+                default:
+                    CBaseMessages.ErrorMessage(exception.Message, "MySql Error");
+                    break;
+            }
+        }
+
+        private string GetEntityValidationMessage(DbEntityValidationException exception) {
+            StringBuilder message = new StringBuilder();
+            foreach (DbEntityValidationResult entityResult in exception.EntityValidationErrors) {
+                foreach (DbValidationError validationError in entityResult.ValidationErrors) {
+                    if (!string.IsNullOrWhiteSpace(validationError.PropertyName)) {
+                        message.Append(validationError.PropertyName);
+                        message.Append(": ");
+                    }
+                    message.AppendLine(validationError.ErrorMessage);
+                }
+            }
+            return message.ToString();
+        }
+        #endregion
     }
 }

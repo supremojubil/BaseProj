@@ -136,15 +136,15 @@
 
         #endregion
 
-        private Panel pnlBaseToolStrip;
-        private ToolStrip tsBase;
-        private ToolStripButton btnAdd;
-        private ToolStripSeparator Separator1;
-        private ToolStripButton btnEdit;
-        private ToolStripSeparator Separator2;
-        private ToolStripButton btnDelete;
-        private ToolStripSeparator Separator3;
-        private ToolStripButton btnView;
-        private ToolStripButton btnRefresh;
+        protected Panel pnlBaseToolStrip;
+        protected ToolStrip tsBase;
+        protected ToolStripButton btnAdd;
+        protected ToolStripSeparator Separator1;
+        protected ToolStripButton btnEdit;
+        protected ToolStripSeparator Separator2;
+        protected ToolStripButton btnDelete;
+        protected ToolStripSeparator Separator3;
+        protected ToolStripButton btnView;
+        protected ToolStripButton btnRefresh;
     }
 }

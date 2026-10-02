@@ -168,7 +168,7 @@ namespace BaseProject.Forms {
             }
         }
 
-        private async void btnUseItem_Click(object sender, EventArgs e) {
+        private void btnUseItem_Click(object sender, EventArgs e) {
             UseItem();
         }
         

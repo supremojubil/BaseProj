@@ -34,7 +34,7 @@ namespace BaseProject.Entity {
                 if (!result) {
                     return string.Join(Environment.NewLine, results.Select(e => e.ErrorMessage));
                 }
-                return null;
+                return string.Empty;
             }
         }
         public abstract OperationResult Validate();

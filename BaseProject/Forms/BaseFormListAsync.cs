@@ -124,6 +124,7 @@ namespace BaseProject.Forms {
         public BaseFormListAsync() {
             InitializeComponent();
             IsDirty = false;
+            UseKeyDownTab = true;
         }
 
         private async void BaseFormListAsync_KeyDown(object sender, KeyEventArgs e) {

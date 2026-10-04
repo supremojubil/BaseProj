@@ -17,7 +17,7 @@ namespace BaseProject.Entity {
             Success = false;
             Message = "";
         }
-        public OperationResult UnsuccessfuleResult(string message) {
+        public static OperationResult UnsuccessfuleResult(string message) {
             return new OperationResult {
                 Success = false,
                 Message = message
